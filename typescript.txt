@@ -1,0 +1,121 @@
+Script started on 2022-01-07 10:25:34-08:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+]0;pourya@ubuntu: ~/PycharmProjects/pythonProject1[01;32mpourya@ubuntu[00m:[01;34m~/PycharmProjects/pythonProject1[00m$ sudo mn -cwireshark &-E python2.7 create_net3.py [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ky
+[sudo] password for pourya: 
+*** Creating network
+*** Adding hosts:
+host1 host2 host3 
+*** Adding switches:
+s1 s2 s3 
+*** Adding links:
+(host1, s1) (host2, s2) (host3, s3) (s1, s2) (s2, s3) 
+*** Configuring hosts
+host1 host2 host3 
+*** Starting controller
+
+*** Starting 3 switches
+s1 s2 s3 ...
+*** Starting CLI:
+mininet> net
+host1 host1-eth0:s1-eth1
+host2 host2-eth0:s2-eth1
+host3 host3-eth0:s3-eth1
+s1 lo:  s1-eth1:host1-eth0 s1-eth2:s2-eth2
+s2 lo:  s2-eth1:host2-eth0 s2-eth2:s1-eth2 s2-eth3:s3-eth2
+s3 lo:  s3-eth1:host3-eth0 s3-eth2:s2-eth3
+mininet> sh ovs-ofctl add-flow s1 in_port=1,eth_type=0x0800,actions=push_mpls:0x8847,set_field:12-\>mpls_label,output:2
+mininet> sh ovs-ofctl add-flow s1 in_port=2,eth_type=0x08847,actions=pop_mpls:0x0800,output:1
+mininet> sh ovs-ofctl add-flow s1 in_port=1,eth_type=0x806,actions=output:2
+mininet> sh ovs-ofctl add-flow s1 in_port=2,arp,actions=output:1
+mininet> sh ovs-ofctl add-flow s2 in_port=2,eth_type=0x8847,mpls_label=12,actions=set_field:23-\>mpls_label,output:3
+mininet> sh ovs-ofctl add-flow s2 in_port=3,eth_type=0x8847,mpls_label=32,actions=set_field:21-\>mpls_label,output:2
+mininet> sh ovs-ofctl add-flow s2 in_port=2,arp,actions=output:3
+mininet> sh ovs-ofctl add-flow s2 in_port=3,eth_type=0x806,actions=output:2
+mininet> sh ovs-ofctl add-flow s3 in_port=2,eth_type=0x8847,actions=pop_mpls:0x0800,output:1
+mininet> sh ovs-ofctl add-flow s3 in_port=1,eth_type=0x0800,actions=push_mpls:0x8847,set_field:32-\>mpls_label,output:2
+mininet> sh ovs-ofctl add-flow s3 in_port=1,eth_type=0x806,actions=output:2
+mininet> sh ovs-ofctl add-flow s3 in_port=2,eth_type=0x806,actions=output:1
+mininet> hq[Kost1 ping -c3 host3
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=7.18 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.111 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.202 ms
+
+--- 10.0.0.3 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2015ms
+rtt min/avg/max/mdev = 0.111/2.497/7.180/3.311 ms
+mininet> host1 ping -c3 host3[K1[1P[1@3
+PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.
+64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=0.748 ms
+64 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=0.189 ms
+64 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=0.086 ms
+
+--- 10.0.0.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2049ms
+rtt min/avg/max/mdev = 0.086/0.341/0.748/0.290 ms
+mininet> host3 ping -c3 host1[C[C[C[C[C[C[C[C[C[C[C[C[C1 ping -c3 host3[C[C[C[C[C[C[C[C[Csh ovs-ofctl add-flow s3 in_port=2,eth_type=0x806,actions=output:1[C[C[C[C[C[C[C[C[Chost1 ping -c3 host3[K[C[C[C[C[C[C[C[C[C[C[C[C[C3 ping -c3 host1[C[C[C[C[C[C[C[C[C[Kovs-ofctlsovs-ofctlhovs-ofctl ovs-ofctl[C[C[C[C[C[C[C[C[C dump-flows s1
+ cookie=0x0, duration=83.595s, table=0, n_packets=6, n_bytes=588, ip,in_port="s1-eth1" actions=push_mpls:0x8847,load:0xc->OXM_OF_MPLS_LABEL[],output:"s1-eth2"
+ cookie=0x0, duration=83.583s, table=0, n_packets=6, n_bytes=612, mpls,in_port="s1-eth2" actions=pop_mpls:0x0800,output:"s1-eth1"
+ cookie=0x0, duration=83.571s, table=0, n_packets=3, n_bytes=126, arp,in_port="s1-eth1" actions=output:"s1-eth2"
+ cookie=0x0, duration=79.067s, table=0, n_packets=3, n_bytes=126, arp,in_port="s1-eth2" actions=output:"s1-eth1"
+mininet> sh ovs-ofctl dump-flows s1[K2
+ cookie=0x0, duration=70.687s, table=0, n_packets=6, n_bytes=612, mpls,in_port="s2-eth2",mpls_label=12 actions=load:0x17->OXM_OF_MPLS_LABEL[],output:"s2-eth3"
+ cookie=0x0, duration=70.679s, table=0, n_packets=6, n_bytes=612, mpls,in_port="s2-eth3",mpls_label=32 actions=load:0x15->OXM_OF_MPLS_LABEL[],output:"s2-eth2"
+ cookie=0x0, duration=70.670s, table=0, n_packets=3, n_bytes=126, arp,in_port="s2-eth2" actions=output:"s2-eth3"
+ cookie=0x0, duration=69.687s, table=0, n_packets=3, n_bytes=126, arp,in_port="s2-eth3" actions=output:"s2-eth2"
+mininet> sh ovs-ofctl dump-flows s2[K3
+ cookie=0x0, duration=62.129s, table=0, n_packets=6, n_bytes=612, mpls,in_port="s3-eth2" actions=pop_mpls:0x0800,output:"s3-eth1"
+ cookie=0x0, duration=62.117s, table=0, n_packets=6, n_bytes=588, ip,in_port="s3-eth1" actions=push_mpls:0x8847,load:0x20->OXM_OF_MPLS_LABEL[],output:"s3-eth2"
+ cookie=0x0, duration=62.110s, table=0, n_packets=3, n_bytes=126, arp,in_port="s3-eth1" actions=output:"s3-eth2"
+ cookie=0x0, duration=60.902s, table=0, n_packets=3, n_bytes=126, arp,in_port="s3-eth2" actions=output:"s3-eth1"
+mininet> [Kmininet> [Kmininet> sh ovs-ofctl dump-flows s3[C[C[C[C[C[C[C[C[C[Ksh ovs-ofctl dump-flows s321[C[C[C[C[C[C[C[C[C[6Phost3 ping -c3 host1[C[C[C[C[C[C[C[C[C[C[C[C[C1 ping -c3 host3[C[C[C[C[C[C[C[C[Csh ovs-ofctl add-flow s3 in_port=2,eth_type=0x806,actions=output:1[C[C[C[C[C[C[C[C[Chost1 ping -c3 host3[K
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=0.730 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.084 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.110 ms
+
+--- 10.0.0.3 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2040ms
+rtt min/avg/max/mdev = 0.084/0.308/0.730/0.298 ms
+mininet> host1 ping -c3 host3[1P host31 host30 host3
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=0.624 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.101 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.066 ms
+64 bytes from 10.0.0.3: icmp_seq=4 ttl=64 time=0.123 ms
+64 bytes from 10.0.0.3: icmp_seq=5 ttl=64 time=0.078 ms
+64 bytes from 10.0.0.3: icmp_seq=6 ttl=64 time=0.094 ms
+64 bytes from 10.0.0.3: icmp_seq=7 ttl=64 time=0.116 ms
+64 bytes from 10.0.0.3: icmp_seq=8 ttl=64 time=0.102 ms
+64 bytes from 10.0.0.3: icmp_seq=9 ttl=64 time=0.096 ms
+64 bytes from 10.0.0.3: icmp_seq=10 ttl=64 time=0.322 ms
+
+--- 10.0.0.3 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9213ms
+rtt min/avg/max/mdev = 0.066/0.172/0.624/0.165 ms
+mininet> host1 ping -c10 host3
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=0.560 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.229 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.155 ms
+64 bytes from 10.0.0.3: icmp_seq=4 ttl=64 time=0.173 ms
+64 bytes from 10.0.0.3: icmp_seq=5 ttl=64 time=0.068 ms
+64 bytes from 10.0.0.3: icmp_seq=6 ttl=64 time=0.106 ms
+64 bytes from 10.0.0.3: icmp_seq=7 ttl=64 time=0.172 ms
+64 bytes from 10.0.0.3: icmp_seq=8 ttl=64 time=0.082 ms
+64 bytes from 10.0.0.3: icmp_seq=9 ttl=64 time=0.086 ms
+64 bytes from 10.0.0.3: icmp_seq=10 ttl=64 time=0.075 ms
+
+--- 10.0.0.3 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9211ms
+rtt min/avg/max/mdev = 0.068/0.170/0.560/0.139 ms
+mininet> host1 ping -c10 host3
+PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=0.745 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.081 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.075 ms
+64 bytes from 10.0.0.3: icmp_seq=4 ttl=64 time=0.081 ms
+64 bytes from 10.0.0.3: icmp_seq=5 ttl=64 time=0.060 ms
+64 bytes from 10.0.0.3: icmp_seq=6 ttl=64 time=0.229 ms
+64 bytes from 10.0.0.3: icmp_seq=7 ttl=64 time=0.092 ms
+64 bytes from 10.0.0.3: icmp_seq=8 ttl=64 time=0.118 ms
+64 bytes from 10.0.0
